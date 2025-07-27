@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+torch
+torchvision
+transformers
+open-clip-torch
+scikit-image
+opencv-python-headless
+matplotlib
+scipy
+Pillow
+google-generativeai
+numpy
+python-multipart
+pydantic
