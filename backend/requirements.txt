@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic
+sqlalchemy
+python-dotenv
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+pydantic-settings
+httpx # Modern async HTTP client for calling AI services
+pdfplumber # For extracting text from PDFs
