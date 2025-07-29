@@ -25,14 +25,16 @@ async def test_endpoint():
     """Test endpoint to verify the router is working"""
     return {"message": "Reports router is working!", "status": "ok"}
 
-@router.post("/upload", response_model=schemas.Patient, status_code=201)
-async def upload_report_and_extract_entities(
+@router.post("/upload-report/{patient_id}", response_model=schemas.Patient, status_code=201)
+async def upload_report(
+    patient_id: int,
     file: UploadFile = File(...), 
     db: Session = Depends(get_db),
     current_user: schemas.User = Depends(get_current_user) # Dependency for authentication
 ):
     """
-    Handles the entire NER workflow for an uploaded PDF report.
+    Upload and process a medical report for a specific patient.
+    Extracts entities using NER service and creates patient if needed.
     Requires user to be authenticated.
     """
     logger.info(f"User {current_user.username} uploading file: {file.filename}")

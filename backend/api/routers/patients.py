@@ -11,8 +11,8 @@ from api.deps import get_current_user
 
 router = APIRouter()
 
-@router.get("/", response_model=List[schemas.Patient])
-def read_patients(
+@router.get("/get-all-patients", response_model=List[schemas.Patient])
+def get_all_patients(
     skip: int = 0,
     limit: int = 100,
     db: Session = Depends(get_db),
@@ -24,8 +24,19 @@ def read_patients(
     patients = crud.get_patients(db, skip=skip, limit=limit)
     return patients
 
-@router.get("/{patient_id}", response_model=schemas.Patient)
-def read_patient(
+@router.post("/add-patient", response_model=schemas.Patient, status_code=201)
+def add_patient(
+    patient: schemas.PatientCreate,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user)
+):
+    """
+    Create a new patient. Requires authentication.
+    """
+    return crud.create_patient(db=db, patient=patient)
+
+@router.get("/get-patient/{patient_id}", response_model=schemas.Patient)
+def get_patient(
     patient_id: int,
     db: Session = Depends(get_db),
     current_user: schemas.User = Depends(get_current_user)
@@ -38,8 +49,8 @@ def read_patient(
         raise HTTPException(status_code=404, detail="Patient not found")
     return db_patient
 
-@router.delete("/{patient_id}", status_code=status.HTTP_200_OK)
-def delete_patient_endpoint(
+@router.delete("/delete-patient/{patient_id}", status_code=status.HTTP_200_OK)
+def delete_patient(
     patient_id: int,
     db: Session = Depends(get_db),
     current_user: schemas.User = Depends(get_current_user)

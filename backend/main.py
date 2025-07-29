@@ -17,10 +17,9 @@ app = FastAPI(
 
 # Include all the different routers
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
-# app.include_router(users.router, prefix="/api/users", tags=["Users"])
-app.include_router(reports.router, prefix="/api/reports", tags=["Reports"])
 app.include_router(patients.router, prefix="/api/patients", tags=["Patients"])
-app.include_router(xray.router, prefix="/api/xray", tags=["X-Ray Analysis"])
+app.include_router(reports.router, prefix="/api/patients", tags=["Medical Reports"])
+app.include_router(xray.router, prefix="/api/patients", tags=["X-Ray Analysis"])
 
 @app.get("/")
 def read_root():

@@ -11,16 +11,15 @@ from api.deps import get_current_user
 
 router = APIRouter()
 
-@router.post("/patients/{patient_id}/xray/analyze", response_model=schemas.Report)
-async def analyze_patient_xray(
+@router.post("/analyze-xray/{patient_id}", response_model=schemas.Report)
+async def analyze_xray(
     patient_id: int,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: schemas.User = Depends(get_current_user)
 ):
     """
-    Analyzes an X-ray for a specific patient, saves the analysis as a new report,
-    and returns the report.
+    Analyze an X-ray for a specific patient and save the analysis as a new report.
     """
     # Verify patient exists
     db_patient = crud.get_patient(db, patient_id=patient_id)
@@ -43,8 +42,8 @@ async def analyze_patient_xray(
     
     return db_report
 
-@router.post("/patients/{patient_id}/xray/compare", response_model=schemas.Report)
-async def compare_patient_xrays(
+@router.post("/compare-xrays/{patient_id}", response_model=schemas.Report)
+async def compare_xrays(
     patient_id: int,
     previous_xray: UploadFile = File(...),
     current_xray: UploadFile = File(...),
@@ -52,7 +51,7 @@ async def compare_patient_xrays(
     current_user: schemas.User = Depends(get_current_user)
 ):
     """
-    Compares two X-rays for a specific patient and saves the result as a new report.
+    Compare two X-rays for a specific patient and save the result as a new report.
     """
     db_patient = crud.get_patient(db, patient_id=patient_id)
     if not db_patient:
@@ -72,14 +71,14 @@ async def compare_patient_xrays(
     
     return db_report
 
-@router.post("/xray/qna", response_model=schemas.QNAResponse)
-async def xray_question_answering(
+@router.post("/ask-question", response_model=schemas.QNAResponse)
+async def ask_question(
     payload: schemas.QNARequest,
     current_user: schemas.User = Depends(get_current_user)
 ):
     """
-    A stateless endpoint to ask a question about a given report context.
-    Does not interact with the database.
+    Ask a question about a medical report context.
+    This is a stateless endpoint that doesn't interact with the database.
     """
     try:
         qna_result = await xray_service.call_xray_qna(payload.report_context, payload.question)
