@@ -42,3 +42,8 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+
+*.db
+*/*/backend_venv
+*/*/ner_venv
+*/*/xray_venv
