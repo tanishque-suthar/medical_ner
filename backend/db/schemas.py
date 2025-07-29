@@ -56,3 +56,25 @@ class User(UserBase):
 
 # Update forward references
 Patient.model_rebuild()
+
+# --- X-Ray Analysis Schemas (NEW) ---
+
+class PathologyResult(BaseModel):
+    name: str
+    probability: float
+    detected: bool
+
+class XRayAnalyzeResponse(BaseModel):
+    pathologies: List[PathologyResult]
+    generated_report: str
+    segmentation_map: Optional[str] = None
+
+class XRayCompareResponse(BaseModel):
+    comparison_report: str
+
+class QNARequest(BaseModel):
+    report_context: str
+    question: str
+
+class QNAResponse(BaseModel):
+    answer: str
