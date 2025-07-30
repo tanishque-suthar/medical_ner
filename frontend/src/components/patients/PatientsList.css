@@ -21,6 +21,66 @@
     margin: 0;
 }
 
+/* Search Styles */
+.patients-search {
+    margin-bottom: 1.5rem;
+}
+
+.search-input-container {
+    position: relative;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.clear-search-btn:hover {
+    color: #374151;
+    background-color: #f3f4f6;
+}
+
+.search-results-info {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
 .patients-loading,
 .patients-error,
 .no-patients {
@@ -138,6 +198,10 @@
         flex-direction: column;
         gap: 1rem;
         align-items: stretch;
+    }
+
+    .search-input-container {
+        max-width: none;
     }
 
     .patients-table-container {
