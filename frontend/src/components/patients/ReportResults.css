@@ -327,3 +327,194 @@
 .btn-primary:hover {
     background: #2563eb;
 }
+
+/* X-Ray Results Styles */
+.xray-results-section {
+    margin-top: 20px;
+}
+
+.pathologies-summary {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.pathologies-summary h4 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.pathology-stats {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.detected-pathologies {
+    margin-bottom: 25px;
+}
+
+.detected-pathologies h5,
+.all-pathologies h5,
+.generated-report h5 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.pathology-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pathology-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.pathology-item.detected {
+    border-color: #dc3545;
+    background: #fff5f5;
+}
+
+.pathology-item.not-detected {
+    border-color: #28a745;
+    background: #f8fff9;
+}
+
+.pathology-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.pathology-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.pathology-name {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+.pathology-confidence {
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+.pathology-status {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pathology-status.detected {
+    background: #dc3545;
+    color: white;
+}
+
+.pathology-status.not-detected {
+    background: #28a745;
+    color: white;
+}
+
+.generated-report {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.report-text {
+    background: white;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    line-height: 1.6;
+    color: #495057;
+    white-space: pre-wrap;
+}
+
+.xray-comparison-results {
+    margin-top: 20px;
+}
+
+.xray-comparison-results h4 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.comparison-report {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.comparison-report .report-text {
+    background: white;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    line-height: 1.6;
+    color: #495057;
+    white-space: pre-wrap;
+    font-size: 1rem;
+}
+
+/* Responsive adjustments for X-ray results */
+@media (max-width: 768px) {
+    .pathology-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .pathology-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .pathology-info {
+        align-items: center;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+}
