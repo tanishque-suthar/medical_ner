@@ -10,6 +10,7 @@ const PatientDetails = ({ patient, onBack }) => {
     const [showReportResults, setShowReportResults] = useState(false);
     const [selectedReport, setSelectedReport] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     // Refresh patient data to get updated reports
     const refreshPatientData = async () => {
@@ -39,6 +40,30 @@ const PatientDetails = ({ patient, onBack }) => {
         setSelectedReport(null);
     };
 
+    const handleDeletePatient = async () => {
+        if (!window.confirm(`Are you sure you want to delete patient "${patientData.name}"? This action cannot be undone and will delete all associated reports.`)) {
+            return;
+        }
+
+        try {
+            setIsDeleting(true);
+            await axios.delete(`/api/patients/delete-patient/${patientData.id}`);
+            alert('Patient deleted successfully');
+            onBack(); // Navigate back to patients list
+        } catch (error) {
+            console.error('Failed to delete patient:', error);
+            if (error.response?.status === 403) {
+                alert('You do not have permission to delete patients. Only Admins and Doctors can delete patients.');
+            } else if (error.response?.status === 404) {
+                alert('Patient not found');
+            } else {
+                alert('Failed to delete patient. Please try again.');
+            }
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A';
         return new Date(dateString).toLocaleDateString();
@@ -46,10 +71,12 @@ const PatientDetails = ({ patient, onBack }) => {
 
     const getReportTypeDisplay = (reportType) => {
         switch (reportType) {
-            case 'medical_text':
-                return 'Medical Text (NER)';
-            case 'xray':
+            case 'PDF_NER':
+                return 'Medical Report (PDF NER)';
+            case 'XRAY_ANALYSIS':
                 return 'X-Ray Analysis';
+            case 'XRAY_COMPARISON':
+                return 'X-Ray Comparison';
             default:
                 return reportType;
         }
@@ -63,12 +90,21 @@ const PatientDetails = ({ patient, onBack }) => {
                 </button>
                 <div className="patient-info-header">
                     <h2>{patientData.name}</h2>
-                    <button
-                        onClick={() => setShowUpload(true)}
-                        className="btn btn-primary"
-                    >
-                        Upload Report
-                    </button>
+                    <div className="header-actions">
+                        <button
+                            onClick={() => setShowUpload(true)}
+                            className="btn btn-primary"
+                        >
+                            Upload Report
+                        </button>
+                        <button
+                            onClick={handleDeletePatient}
+                            disabled={isDeleting}
+                            className="btn btn-danger"
+                        >
+                            {isDeleting ? 'Deleting...' : 'Delete Patient'}
+                        </button>
+                    </div>
                 </div>
             </div>
 
