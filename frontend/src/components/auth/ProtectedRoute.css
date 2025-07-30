@@ -1,0 +1,19 @@
+.loading-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.loading-spinner.large {
+    width: 3rem;
+    height: 3rem;
+    border-width: 3px;
+}
+
+.loading-container p {
+    color: #6b7280;
+    font-size: 1rem;
+}
