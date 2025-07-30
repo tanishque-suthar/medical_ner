@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginPage from './components/auth/LoginPage';
 import Dashboard from './components/DashboardNew';
 import PatientsPage from './components/patients/PatientsPage';
+import ReportsPage from './components/reports/ReportsPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Header from './components/common/Header';
 import './App.css';
@@ -27,10 +28,7 @@ function AppContent() {
       case 'patients':
         return <PatientsPage />;
       case 'reports':
-        return <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <h2>Reports Page</h2>
-          <p>Coming soon...</p>
-        </div>;
+        return <ReportsPage />;
       case 'xray':
         return <div style={{ padding: '2rem', textAlign: 'center' }}>
           <h2>X-Ray Analysis Page</h2>

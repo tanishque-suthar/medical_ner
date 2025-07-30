@@ -1,0 +1,81 @@
+import React from 'react';
+import './ReportCard.css';
+
+const ReportCard = ({ report, onViewReport }) => {
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const getReportTypeDisplay = (reportType) => {
+    switch (reportType) {
+      case 'PDF_NER':
+        return 'Medical Report (PDF NER)';
+      case 'XRAY_ANALYSIS':
+        return 'X-Ray Analysis';
+      case 'XRAY_COMPARISON':
+        return 'X-Ray Comparison';
+      default:
+        return reportType || 'Unknown';
+    }
+  };
+
+  const getEntityCount = (report) => {
+    if (!report.results || !report.results.entities) return 0;
+    return report.results.entities.length;
+  };
+
+  return (
+    <div className="report-card">
+      <div className="report-card-header">
+        <div className="report-card-title">
+          <h4>{report.filename}</h4>
+          <span className="report-card-id">ID: {report.id}</span>
+        </div>
+        <span className={`report-type-badge ${report.report_type}`}>
+          {getReportTypeDisplay(report.report_type)}
+        </span>
+      </div>
+      
+      <div className="report-card-content">
+        <div className="report-card-row">
+          <span className="label">Patient:</span>
+          <span className="value">
+            {report.patient_name}
+            {report.patient_age && ` (${report.patient_age}y, ${report.patient_gender})`}
+          </span>
+        </div>
+        
+        <div className="report-card-row">
+          <span className="label">Report ID:</span>
+          <span className="value">#{report.id}</span>
+        </div>
+        
+        <div className="report-card-row">
+          <span className="label">Entities Found:</span>
+          <span className="value entities-count">
+            <span className="entities-number">{getEntityCount(report)}</span>
+            <span className="entities-label">entities</span>
+          </span>
+        </div>
+      </div>
+      
+      <div className="report-card-actions">
+        <button
+          onClick={() => onViewReport(report)}
+          className="btn btn-primary"
+        >
+          View Results
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ReportCard;
