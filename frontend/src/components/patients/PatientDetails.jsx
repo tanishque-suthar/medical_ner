@@ -107,74 +107,74 @@ const PatientDetails = ({ patient, onBack }) => {
                     </div>
                 </div>
             </div>
-
-            <div className="patient-info-card">
-                <h3>Patient Information</h3>
-                <div className="patient-info-grid">
-                    <div className="info-item">
-                        <span className="info-label">ID:</span>
-                        <span className="info-value">{patientData.id}</span>
-                    </div>
-                    <div className="info-item">
-                        <span className="info-label">Name:</span>
-                        <span className="info-value">{patientData.name}</span>
-                    </div>
-                    <div className="info-item">
-                        <span className="info-label">Age:</span>
-                        <span className="info-value">{patientData.age}</span>
-                    </div>
-                    <div className="info-item">
-                        <span className="info-label">Gender:</span>
-                        <span className="info-value">{patientData.gender}</span>
+            <div className="patient-content">
+                <div className="patient-info-card">
+                    <h3>Patient Information</h3>
+                    <div className="patient-info-grid">
+                        <div className="info-item">
+                            <span className="info-label">ID:</span>
+                            <span className="info-value">{patientData.id}</span>
+                        </div>
+                        <div className="info-item">
+                            <span className="info-label">Name:</span>
+                            <span className="info-value">{patientData.name}</span>
+                        </div>
+                        <div className="info-item">
+                            <span className="info-label">Age:</span>
+                            <span className="info-value">{patientData.age}</span>
+                        </div>
+                        <div className="info-item">
+                            <span className="info-label">Gender:</span>
+                            <span className="info-value">{patientData.gender}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="reports-section">
-                <div className="reports-header">
-                    <h3>Medical Reports ({patientData.reports?.length || 0})</h3>
-                    {loading && <div className="loading-spinner-sm"></div>}
-                </div>
+                <div className="reports-section">
+                    <div className="reports-header">
+                        <h3>Medical Reports ({patientData.reports?.length || 0})</h3>
+                        {loading && <div className="loading-spinner-sm"></div>}
+                    </div>
 
-                {patientData.reports && patientData.reports.length > 0 ? (
-                    <div className="reports-list">
-                        {patientData.reports.map(report => (
-                            <div key={report.id} className="report-card">
-                                <div className="report-info">
-                                    <h4 className="report-filename">{report.filename}</h4>
-                                    <div className="report-meta">
-                                        <span className="report-type">
-                                            {getReportTypeDisplay(report.report_type)}
-                                        </span>
-                                        <span className="report-date">
-                                            {formatDate(report.created_at)}
-                                        </span>
+                    {patientData.reports && patientData.reports.length > 0 ? (
+                        <div className="reports-list">
+                            {patientData.reports.map(report => (
+                                <div key={report.id} className="report-card">
+                                    <div className="report-info">
+                                        <h4 className="report-filename">{report.filename}</h4>
+                                        <div className="report-meta">
+                                            <span className="report-type">
+                                                {getReportTypeDisplay(report.report_type)}
+                                            </span>
+                                            <span className="report-date">
+                                                {formatDate(report.created_at)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="report-actions">
+                                        <button
+                                            className="btn btn-sm btn-outline"
+                                            onClick={() => handleViewResults(report)}
+                                        >
+                                            View Results
+                                        </button>
                                     </div>
                                 </div>
-                                <div className="report-actions">
-                                    <button
-                                        className="btn btn-sm btn-outline"
-                                        onClick={() => handleViewResults(report)}
-                                    >
-                                        View Results
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="no-reports">
-                        <p>No reports uploaded yet</p>
-                        <button
-                            onClick={() => setShowUpload(true)}
-                            className="btn btn-secondary"
-                        >
-                            Upload First Report
-                        </button>
-                    </div>
-                )}
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="no-reports">
+                            <p>No reports uploaded yet</p>
+                            <button
+                                onClick={() => setShowUpload(true)}
+                                className="btn btn-secondary"
+                            >
+                                Upload First Report
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
-
             {showUpload && (
                 <FileUpload
                     patientId={patientData.id}
