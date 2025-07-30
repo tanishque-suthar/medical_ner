@@ -16,7 +16,19 @@ def get_patient_by_name(db: Session, name: str) -> Optional[models.Patient]:
     Retrieves the first patient found with a matching name.
     Note: In a real-world scenario, you'd use a more robust identifier than name.
     """
-    return db.query(models.Patient).filter(models.Patient.name == name).first()
+    normalized_name = name.strip().title()  # "john smith" -> "John Smith"
+    return db.query(models.Patient).filter(
+        models.Patient.name.ilike(normalized_name)
+    ).first()
+
+def get_patients_by_name(db: Session, name: str) -> List[models.Patient]:
+    """
+    Retrieves ALL patients with a matching name (handles duplicates).
+    """
+    normalized_name = name.strip().title()  # "john smith" -> "John Smith"
+    return db.query(models.Patient).filter(
+        models.Patient.name.ilike(normalized_name)
+    ).all()
 
 def get_patients(db: Session, skip: int = 0, limit: int = 100) -> List[models.Patient]:
     """

@@ -25,19 +25,30 @@ async def test_endpoint():
     """Test endpoint to verify the router is working"""
     return {"message": "Reports router is working!", "status": "ok"}
 
-@router.post("/upload-report/{patient_id}", response_model=schemas.Patient, status_code=201)
+@router.post("/upload-report", status_code=201)
 async def upload_report(
-    patient_id: int,
-    file: UploadFile = File(...), 
+    file: UploadFile = File(...),
+    patient_id: int = None,  # Optional: if provided, use this specific patient
     db: Session = Depends(get_db),
-    current_user: schemas.User = Depends(get_current_user) # Dependency for authentication
+    current_user: schemas.User = Depends(get_current_user)
 ):
     """
-    Upload and process a medical report for a specific patient.
-    Extracts entities using NER service and creates patient if needed.
-    Requires user to be authenticated.
+    Upload and process a medical report. 
+    
+    Args:
+        file: PDF file containing medical report
+        patient_id: Optional - ID of existing patient to attach report to.
+                   If not provided, creates new patient with extracted name.
+        
+    Workflow:
+        1. If patient_id provided -> attach report to that patient
+        2. If no patient_id -> extract name and create new patient
+        
+    Returns:
+        Success response with patient and report information
     """
     logger.info(f"User {current_user.username} uploading file: {file.filename}")
+    logger.info(f"Target patient ID: {patient_id if patient_id else 'Auto-create new patient'}")
     
     if file.content_type != "application/pdf":
         logger.warning(f"Invalid file type: {file.content_type} for file: {file.filename}")
@@ -71,41 +82,52 @@ async def upload_report(
             entities = []
             logger.warning("Continuing without NER results due to service error")
 
-        # Extract patient details
-        logger.info("Extracting patient details...")
-        patient_details = crud.extract_patient_details_from_text(extracted_text)
-        logger.info(f"Extracted patient details: {patient_details}")
-        
-        if not patient_details.get("name"):
-            logger.warning("Could not find patient name in report")
-            # Instead of failing, create a default patient name based on filename and timestamp
-            import datetime
-            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            default_name = f"Patient_{file.filename.split('.')[0]}_{timestamp}"
-            patient_details["name"] = default_name
-            logger.info(f"Using default patient name: {default_name}")
+        # Handle patient assignment logic
+        if patient_id:
+            # User specified a patient ID - use that patient
+            logger.info(f"Using specified patient ID: {patient_id}")
+            db_patient = crud.get_patient(db, patient_id=patient_id)
             
-            # Provide a helpful error message with suggestions
-            suggestion_msg = (
-                f"Could not automatically extract patient name from the report. "
-                f"Created patient with name '{default_name}'. "
-                f"To improve automatic extraction, ensure the PDF contains text like: "
-                f"'Patient Name: John Doe', 'Name: John Doe', or 'Patient: John Doe'. "
-                f"You can use the /reports/debug-pdf endpoint to see what text was extracted."
-            )
-            logger.warning(suggestion_msg)
+            if not db_patient:
+                raise HTTPException(
+                    status_code=404, 
+                    detail=f"Patient with ID {patient_id} not found"
+                )
+                
+            action_taken = "used_specified_patient"
+            logger.info(f"Found specified patient: {db_patient.name} (ID: {db_patient.id})")
+            
+        else:
+            # No patient ID provided - extract name and create new patient
+            logger.info("No patient ID provided, extracting name and creating new patient")
+            
+            # Extract patient details
+            logger.info("Extracting patient details...")
+            patient_details = crud.extract_patient_details_from_text(extracted_text)
+            logger.info(f"Extracted patient details: {patient_details}")
+            
+            # Handle name extraction failure
+            if not patient_details.get("name"):
+                logger.warning("Could not extract patient name from report")
+                raise HTTPException(
+                    status_code=400,
+                    detail={
+                        "status": "name_extraction_failed",
+                        "message": "Could not extract patient name from document",
+                        "action_required": "manual_name_input_or_patient_id", 
+                        "suggestion": "Use search-patients-by-name to find existing patients, or use upload-report-with-name endpoint",
+                        "extracted_text_preview": extracted_text[:200] + "..." if len(extracted_text) > 200 else extracted_text
+                    }
+                )
 
-        # Find or create patient
-        logger.info(f"Looking for existing patient: {patient_details['name']}")
-        db_patient = crud.get_patient_by_name(db, name=patient_details["name"])
-        
-        if not db_patient:
-            logger.info("Creating new patient...")
+            # Create new patient with extracted details
+            extracted_name = patient_details["name"]
+            logger.info(f"Successfully extracted patient name: {extracted_name}")
+            
             patient_to_create = schemas.PatientCreate(**patient_details)
             db_patient = crud.create_patient(db, patient=patient_to_create)
+            action_taken = "created_new_patient"
             logger.info(f"Created new patient with ID: {db_patient.id}")
-        else:
-            logger.info(f"Found existing patient with ID: {db_patient.id}")
 
         # Create report
         logger.info("Creating report...")
@@ -118,7 +140,18 @@ async def upload_report(
         logger.info(f"Created report with ID: {report.id}")
         
         logger.info("Upload completed successfully")
-        return db_patient
+        
+        # Prepare response with detailed information
+        response = {
+            "status": "success",
+            "action": action_taken,
+            "patient_id": db_patient.id,
+            "patient_name": db_patient.name,
+            "report_id": report.id,
+            "entities_found": len(entities)
+        }
+        
+        return response
         
     except HTTPException:
         # Re-raise HTTP exceptions (they're already handled properly)
@@ -127,6 +160,135 @@ async def upload_report(
         logger.error(f"Unexpected error during upload: {str(e)}")
         logger.error(f"Traceback: {traceback.format_exc()}")
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+@router.post("/upload-report-with-name", status_code=201)
+async def upload_report_with_manual_name(
+    patient_name: str,
+    file: UploadFile = File(...),
+    patient_age: int = None,
+    patient_gender: str = None,
+    patient_id: int = None,  # Optional: if provided, ignore name and use this patient
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user)
+):
+    """
+    Upload a medical report with manually provided patient information.
+    Use this when automatic name extraction fails.
+    
+    Args:
+        patient_name: Patient name (required if no patient_id)
+        file: PDF file containing medical report
+        patient_age: Patient age (optional)
+        patient_gender: Patient gender (optional) 
+        patient_id: Optional - ID of existing patient to use instead of creating new
+    """
+    logger.info(f"User {current_user.username} uploading file with manual name: {patient_name}")
+    logger.info(f"Target patient ID: {patient_id if patient_id else 'Create new with provided name'}")
+    
+    if file.content_type != "application/pdf":
+        raise HTTPException(status_code=400, detail="Invalid file type. Only PDF is supported.")
+
+    try:
+        # Read and process PDF (same as before)
+        pdf_bytes = await file.read()
+        
+        with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+            extracted_text = "".join(page.extract_text() or "" for page in pdf.pages)
+        
+        if not extracted_text.strip():
+            raise HTTPException(status_code=400, detail="Could not extract text from PDF.")
+
+        # Call NER service
+        try:
+            ner_response = await ner_service.call_ner_service(extracted_text)
+            entities = ner_response.get("entities", [])
+        except Exception:
+            entities = []
+            logger.warning("NER service unavailable, continuing without entities")
+
+        # Handle patient assignment logic
+        if patient_id:
+            # User specified a patient ID - use that patient
+            logger.info(f"Using specified patient ID: {patient_id}")
+            db_patient = crud.get_patient(db, patient_id=patient_id)
+            
+            if not db_patient:
+                raise HTTPException(
+                    status_code=404, 
+                    detail=f"Patient with ID {patient_id} not found"
+                )
+                
+            action_taken = "used_specified_patient"
+            logger.info(f"Found specified patient: {db_patient.name} (ID: {db_patient.id})")
+            
+        else:
+            # Use manually provided patient details to create new patient
+            patient_details = {
+                "name": patient_name.strip(),
+                "age": patient_age or 0,
+                "gender": patient_gender or "Unknown"
+            }
+            
+            patient_to_create = schemas.PatientCreate(**patient_details)
+            db_patient = crud.create_patient(db, patient=patient_to_create)
+            action_taken = "created_new_patient"
+            logger.info(f"Created new patient with manual details: {db_patient.name} (ID: {db_patient.id})")
+
+        # Create report
+        report_to_create = schemas.ReportCreate(
+            filename=file.filename,
+            report_type=models.ReportType.PDF_NER,
+            results={"entities": entities, "text_length": len(extracted_text), "manual_input": True}
+        )
+        report = crud.create_report_for_patient(db, report=report_to_create, patient_id=db_patient.id)
+        
+        response = {
+            "status": "success",
+            "action": action_taken,
+            "patient_id": db_patient.id,
+            "patient_name": db_patient.name,
+            "report_id": report.id,
+            "entities_found": len(entities),
+            "manual_input_used": True
+        }
+        
+        return response
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in manual upload: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+@router.get("/search-patients-by-name")
+async def search_patients_by_name(
+    name: str,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user)
+):
+    """
+    Search for existing patients by exact name match.
+    Useful for frontend to show duplicate options before upload.
+    """
+    if not name.strip():
+        raise HTTPException(status_code=400, detail="Name parameter is required")
+    
+    patients = crud.get_patients_by_name(db, name=name.strip())
+    
+    return {
+        "search_name": name,
+        "matches_found": len(patients),
+        "patients": [
+            {
+                "id": p.id,
+                "name": p.name,
+                "age": p.age,
+                "gender": p.gender,
+                "reports_count": len(p.reports)
+            }
+            for p in patients
+        ]
+    }
 
 @router.post("/debug-pdf")
 def debug_pdf_extraction(
