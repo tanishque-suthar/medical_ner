@@ -27,21 +27,20 @@
     background: #f0fdf4;
 }
 
-.xray-patient-info h4 {
+.patient-info h4 {
     font-size: 1.1rem;
     font-weight: 600;
     color: #065f46;
     margin: 0 0 0.5rem 0;
 }
 
-.xray-patient-details {
-    display: flex;
-    flex-wrap: wrap;
+.patient-details {
+    display: block;
     gap: 1rem;
     margin-bottom: 0.5rem;
 }
 
-.xray-patient-details span {
+.patient-details span {
     font-size: 0.875rem;
     color: #374151;
     background: #fff;
@@ -189,7 +188,7 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .xray-patient-details {
+    .patient-details {
         flex-direction: column;
         gap: 0.5rem;
     }

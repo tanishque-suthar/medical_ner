@@ -3,44 +3,44 @@
     width: 100%;
 }
 
-.xray-analysis-header {
+.analysis-header {
     margin-bottom: 2rem;
     text-align: center;
 }
 
-.xray-analysis-header h3 {
+.analysis-header h3 {
     font-size: 1.5rem;
     font-weight: 600;
     color: #1e293b;
     margin: 0 0 0.5rem 0;
 }
 
-.xray-analysis-subtitle {
+.analysis-subtitle {
     color: #64748b;
     font-size: 0.9rem;
     margin: 0;
     line-height: 1.5;
 }
 
-.xray-analysis-content {
+.analysis-content {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.xray-upload-section {
+.upload-section {
     width: 100%;
 }
 
 /* Analysis Controls */
-.xray-analysis-controls {
+.analysis-controls {
     display: flex;
     justify-content: center;
     gap: 1rem;
     align-items: center;
 }
 
-.xray-analyze-btn {
+.analyze-btn {
     padding: 0.75rem 2rem;
     font-size: 1rem;
     font-weight: 600;
@@ -48,7 +48,7 @@
     position: relative;
 }
 
-.xray-btn-spinner {
+.btn-spinner {
     width: 1rem;
     height: 1rem;
     border: 2px solid transparent;
@@ -58,12 +58,12 @@
     margin-right: 0.5rem;
 }
 
-.xray-clear-btn {
+.clear-btn {
     padding: 0.75rem 1.5rem;
 }
 
 /* Error Display */
-.xray-analysis-error {
+.analysis-error {
     background: #fef2f2;
     border: 1px solid #fecaca;
     border-radius: 0.5rem;
@@ -74,19 +74,19 @@
     margin: 1rem 0;
 }
 
-.xray-error-icon {
+.error-icon {
     font-size: 1.25rem;
     flex-shrink: 0;
 }
 
-.xray-error-content h4 {
+.error-content h4 {
     color: #dc2626;
     font-size: 1rem;
     font-weight: 600;
     margin: 0 0 0.25rem 0;
 }
 
-.xray-error-content p {
+.error-content p {
     color: #991b1b;
     margin: 0;
     font-size: 0.875rem;
@@ -94,7 +94,7 @@
 }
 
 /* Analysis Progress */
-.xray-analysis-progress {
+.analysis-progress {
     background: #f0f9ff;
     border: 1px solid #bae6fd;
     border-radius: 0.75rem;
@@ -103,39 +103,39 @@
     margin: 1rem 0;
 }
 
-.xray-progress-content {
+.progress-content {
     max-width: 400px;
     margin: 0 auto;
 }
 
-.xray-progress-icon {
+.progress-icon {
     font-size: 3rem;
     margin-bottom: 1rem;
     animation: pulse 2s infinite;
 }
 
-.xray-progress-content h4 {
+.progress-content h4 {
     color: #0c4a6e;
     font-size: 1.25rem;
     font-weight: 600;
     margin: 0 0 0.5rem 0;
 }
 
-.xray-progress-content p {
+.progress-content p {
     color: #075985;
     margin: 0 0 1.5rem 0;
     font-size: 0.9rem;
     line-height: 1.5;
 }
 
-.xray-progress-steps {
+.progress-steps {
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin-top: 1rem;
 }
 
-.xray-progress-step {
+.progress-step {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -144,11 +144,11 @@
     transition: opacity 0.3s;
 }
 
-.xray-progress-step.active {
+.progress-step.active {
     opacity: 1;
 }
 
-.xray-step-number {
+.step-number {
     width: 2rem;
     height: 2rem;
     background: #e0f2fe;
@@ -161,19 +161,19 @@
     font-size: 0.875rem;
 }
 
-.xray-progress-step.active .xray-step-number {
+.progress-step.active .step-number {
     background: #0ea5e9;
     color: #fff;
 }
 
-.xray-step-text {
+.step-text {
     font-size: 0.8rem;
     color: #0c4a6e;
     text-align: center;
 }
 
 /* Results Section */
-.xray-results-section {
+.results-section {
     margin-top: 2rem;
     border-top: 2px solid #e2e8f0;
     padding-top: 2rem;
@@ -204,27 +204,27 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .xray-analysis-header h3 {
+    .analysis-header h3 {
         font-size: 1.25rem;
     }
 
-    .xray-analysis-controls {
+    .analysis-controls {
         flex-direction: column;
         gap: 0.75rem;
     }
 
-    .xray-analyze-btn,
-    .xray-clear-btn {
+    .analyze-btn,
+    .clear-btn {
         width: 100%;
         max-width: 300px;
     }
 
-    .xray-progress-steps {
+    .progress-steps {
         flex-direction: column;
         gap: 0.75rem;
     }
 
-    .xray-progress-step {
+    .progress-step {
         flex-direction: row;
         gap: 0.5rem;
     }

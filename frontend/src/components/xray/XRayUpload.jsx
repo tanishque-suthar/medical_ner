@@ -111,7 +111,6 @@ const XRayUpload = ({ onFileSelect, selectedFile, disabled }) => {
                     />
 
                     <div className="upload-content">
-                        <div className="upload-icon">📁</div>
                         <h3>Drop X-ray image here</h3>
                         <p>or click to browse files</p>
                         <div className="upload-formats">

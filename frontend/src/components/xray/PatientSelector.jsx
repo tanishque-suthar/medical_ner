@@ -56,9 +56,9 @@ const PatientSelector = ({ patients, selectedPatient, onPatientSelect }) => {
 
             {selectedPatient ? (
                 <div className="selected-patient-card">
-                    <div className="xray-patient-info">
+                    <div className="patient-info">
                         <h4>{selectedPatient.name}</h4>
-                        <div className="xray-patient-details">
+                        <div className="patient-details">
                             <span>ID: {selectedPatient.id}</span>
                             <span>Age: {selectedPatient.age}</span>
                             <span>Gender: {selectedPatient.gender}</span>

@@ -64,15 +64,15 @@ const XRayAnalysis = ({ patient }) => {
 
     return (
         <div className="xray-analysis">
-            <div className="xray-analysis-header">
+            <div className="analysis-header">
                 <h3>X-Ray Analysis for {patient.name}</h3>
-                <p className="xray-analysis-subtitle">
+                <p className="analysis-subtitle">
                     Upload a chest X-ray image for AI-powered pathology detection
                 </p>
             </div>
 
-            <div className="xray-analysis-content">
-                <div className="xray-upload-section">
+            <div className="analysis-content">
+                <div className="upload-section">
                     <XRayUpload
                         onFileSelect={handleFileSelect}
                         selectedFile={selectedFile}
@@ -80,15 +80,15 @@ const XRayAnalysis = ({ patient }) => {
                     />
                 </div>
 
-                <div className="xray-analysis-controls">
+                <div className="analysis-controls">
                     <button
                         onClick={handleAnalyze}
                         disabled={isAnalyzeDisabled}
-                        className={`btn ${analyzing ? 'btn-secondary' : 'btn-primary'} xray-analyze-btn`}
+                        className={`btn ${analyzing ? 'btn-secondary' : 'btn-primary'} analyze-btn`}
                     >
                         {analyzing ? (
                             <>
-                                <div className="xray-btn-spinner"></div>
+                                <div className="btn-spinner"></div>
                                 Analyzing X-Ray...
                             </>
                         ) : (
@@ -99,7 +99,7 @@ const XRayAnalysis = ({ patient }) => {
                     {results && (
                         <button
                             onClick={handleClearResults}
-                            className="btn btn-outline xray-clear-btn"
+                            className="btn btn-outline clear-btn"
                         >
                             Clear Results
                         </button>
@@ -107,9 +107,9 @@ const XRayAnalysis = ({ patient }) => {
                 </div>
 
                 {error && (
-                    <div className="xray-analysis-error">
-                        <div className="xray-error-icon">⚠️</div>
-                        <div className="xray-error-content">
+                    <div className="analysis-error">
+                        <div className="error-icon">Warning</div>
+                        <div className="error-content">
                             <h4>Analysis Failed</h4>
                             <p>{error}</p>
                         </div>
@@ -117,23 +117,23 @@ const XRayAnalysis = ({ patient }) => {
                 )}
 
                 {analyzing && (
-                    <div className="xray-analysis-progress">
-                        <div className="xray-progress-content">
-                            <div className="xray-progress-icon">🧠</div>
+                    <div className="analysis-progress">
+                        <div className="progress-content">
+                            <div className="progress-icon">AI</div>
                             <h4>AI Analysis in Progress</h4>
                             <p>Processing your X-ray image using advanced pathology detection models...</p>
-                            <div className="xray-progress-steps">
-                                <div className="xray-progress-step active">
-                                    <span className="xray-step-number">1</span>
-                                    <span className="xray-step-text">Image Processing</span>
+                            <div className="progress-steps">
+                                <div className="progress-step active">
+                                    <span className="step-number">1</span>
+                                    <span className="step-text">Image Processing</span>
                                 </div>
-                                <div className="xray-progress-step active">
-                                    <span className="xray-step-number">2</span>
-                                    <span className="xray-step-text">Pathology Detection</span>
+                                <div className="progress-step active">
+                                    <span className="step-number">2</span>
+                                    <span className="step-text">Pathology Detection</span>
                                 </div>
-                                <div className="xray-progress-step">
-                                    <span className="xray-step-number">3</span>
-                                    <span className="xray-step-text">Report Generation</span>
+                                <div className="progress-step">
+                                    <span className="step-number">3</span>
+                                    <span className="step-text">Report Generation</span>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +141,7 @@ const XRayAnalysis = ({ patient }) => {
                 )}
 
                 {results && !analyzing && (
-                    <div className="xray-results-section">
+                    <div className="results-section">
                         <XRayResults
                             results={results}
                             patient={patient}

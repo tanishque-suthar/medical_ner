@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PatientSelector from './PatientSelector';
 import XRayAnalysis from './XRayAnalysis';
+import XRayComparison from './XRayComparison';
 import './XRayPage.css';
 
 const XRayPage = () => {
@@ -9,6 +10,7 @@ const XRayPage = () => {
     const [patients, setPatients] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [activeTab, setActiveTab] = useState('analysis'); // 'analysis' or 'comparison'
 
     useEffect(() => {
         fetchPatients();
@@ -75,12 +77,36 @@ const XRayPage = () => {
 
                 <div className="xray-analysis-section">
                     {selectedPatient ? (
-                        <XRayAnalysis patient={selectedPatient} />
+                        <div className="analysis-tabs-container">
+                            <div className="analysis-tabs">
+                                <button
+                                    onClick={() => setActiveTab('analysis')}
+                                    className={`tab-button ${activeTab === 'analysis' ? 'active' : ''}`}
+                                >
+                                    Single Analysis
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('comparison')}
+                                    className={`tab-button ${activeTab === 'comparison' ? 'active' : ''}`}
+                                >
+                                    Compare X-Rays
+                                </button>
+                            </div>
+
+                            <div className="tab-content">
+                                {activeTab === 'analysis' && (
+                                    <XRayAnalysis patient={selectedPatient} />
+                                )}
+                                {activeTab === 'comparison' && (
+                                    <XRayComparison patient={selectedPatient} />
+                                )}
+                            </div>
+                        </div>
                     ) : (
                         <div className="no-patient-selected">
-                            <div className="no-patient-icon">🩻</div>
+                            <div className="no-patient-icon">X-Ray</div>
                             <h3>Select a Patient</h3>
-                            <p>Choose a patient from the list above to begin X-ray analysis</p>
+                            <p>Choose a patient from the list above to begin X-ray analysis or comparison</p>
                         </div>
                     )}
                 </div>

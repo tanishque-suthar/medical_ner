@@ -183,6 +183,53 @@
     cursor: not-allowed;
 }
 
+/* Analysis Tabs Styles */
+.analysis-tabs-container {
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.analysis-tabs {
+    display: flex;
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-button:hover {
+    color: #3b82f6;
+    background: #e2e8f0;
+}
+
+.tab-button.active {
+    color: #3b82f6;
+    background: #fff;
+    border-bottom-color: #3b82f6;
+}
+
+.tab-content {
+    padding: 0;
+    background: #fff;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .xray-content {
@@ -211,5 +258,14 @@
     .xray-patient-section,
     .xray-analysis-section {
         padding: 1rem;
+    }
+
+    .analysis-tabs {
+        flex-direction: column;
+    }
+
+    .tab-button {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
     }
 }

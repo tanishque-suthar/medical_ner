@@ -79,14 +79,14 @@ const XRayResults = ({ results, patient, originalFile }) => {
                         onClick={handlePrintReport}
                         className="btn btn-outline btn-sm"
                     >
-                        📄 Print Report
+                        Print Report
                     </button>
                 </div>
             </div>
 
             {detectedCount > 0 && (
                 <div className="results-alert">
-                    <div className="alert-icon">⚠️</div>
+                    <div className="alert-icon">Warning</div>
                     <div className="alert-content">
                         <h4>Pathologies Detected</h4>
                         <p>
