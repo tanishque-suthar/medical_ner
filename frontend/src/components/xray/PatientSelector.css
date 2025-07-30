@@ -1,0 +1,207 @@
+/* Patient Selector Styles */
+.patient-selector {
+    width: 100%;
+}
+
+.patient-selector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.patient-selector-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+/* Selected Patient Card */
+.selected-patient-card {
+    border: 2px solid #10b981;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: #f0fdf4;
+}
+
+.xray-patient-info h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #065f46;
+    margin: 0 0 0.5rem 0;
+}
+
+.xray-patient-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.xray-patient-details span {
+    font-size: 0.875rem;
+    color: #374151;
+    background: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #d1d5db;
+}
+
+.patient-reports {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+/* Search Container */
+.patient-search-container {
+    position: relative;
+}
+
+.search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.75rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.patient-search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.patient-search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.dropdown-toggle {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.dropdown-toggle:hover {
+    color: #374151;
+    background-color: #f3f4f6;
+}
+
+/* Patients Dropdown */
+.patients-dropdown {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.patients-list {
+    padding: 0.5rem 0;
+}
+
+.patient-option {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.patient-option:hover {
+    background: #f8fafc;
+}
+
+.patient-option:last-child {
+    border-bottom: none;
+}
+
+.patient-option-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.patient-name {
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.patient-id {
+    font-size: 0.8rem;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.25rem;
+}
+
+.patient-option-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.no-patients-found {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+.no-patients-found p {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .xray-patient-details {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .patient-option-main,
+    .patient-option-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .patients-dropdown {
+        max-height: 250px;
+    }
+}
