@@ -45,7 +45,7 @@ class Report(Base):
     # like a list of entities or a full analysis report.
     results = Column(JSON)
     
-    patient_id = Column(Integer, ForeignKey("patients.id"))
+    patient_id = Column(Integer, ForeignKey("patients.id", ondelete="CASCADE"))
     
     # This creates the many-to-one relationship back to the Patient.
     patient = relationship("Patient", back_populates="reports")

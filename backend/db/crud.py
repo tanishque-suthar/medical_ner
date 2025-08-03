@@ -45,12 +45,29 @@ def create_patient(db: Session, patient: schemas.PatientCreate) -> models.Patien
     return db_patient
 
 def delete_patient(db: Session, patient_id: int) -> Optional[models.Patient]:
-    """Deletes a patient from the database by their ID."""
-    db_patient = db.query(models.Patient).filter(models.Patient.id == patient_id).first()
-    if db_patient:
-        db.delete(db_patient)
-        db.commit()
-    return db_patient
+    """
+    Deletes a patient from the database by their ID.
+    CASCADE deletion will automatically delete all associated reports.
+    """
+    try:
+        db_patient = db.query(models.Patient).filter(models.Patient.id == patient_id).first()
+        if db_patient:
+            # Count reports before deletion for logging
+            report_count = len(db_patient.reports)
+            patient_name = db_patient.name
+            
+            # Delete patient (CASCADE will handle reports automatically)
+            db.delete(db_patient)
+            db.commit()
+            
+            # Log the cascading deletion
+            print(f"Successfully deleted patient '{patient_name}' (ID: {patient_id}) and {report_count} associated reports via CASCADE")
+            
+        return db_patient
+    except Exception as e:
+        db.rollback()
+        print(f"Error deleting patient {patient_id}: {str(e)}")
+        raise e
 
 # --- Report CRUD Functions ---
 

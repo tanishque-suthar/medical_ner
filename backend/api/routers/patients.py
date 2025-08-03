@@ -56,8 +56,14 @@ def delete_patient(
     current_user: schemas.User = Depends(get_current_user)
 ):
     """
-    Delete a patient and all their associated reports.
+    Delete a patient and all their associated reports via CASCADE deletion.
     Requires 'Admin' or 'Doctor' role.
+    
+    This will automatically delete:
+    - The patient record
+    - All associated medical reports
+    - All associated X-ray analyses
+    - All associated comparison reports
     """
     if current_user.role not in ["Admin", "Doctor"]:
         raise HTTPException(
@@ -68,7 +74,24 @@ def delete_patient(
     db_patient = crud.get_patient(db, patient_id=patient_id)
     if db_patient is None:
         raise HTTPException(status_code=404, detail="Patient not found")
-        
-    crud.delete_patient(db=db, patient_id=patient_id)
     
-    return {"message": f"Patient with ID {patient_id} deleted successfully."}
+    # Count reports before deletion for response
+    report_count = len(db_patient.reports)
+    patient_name = db_patient.name
+        
+    try:
+        crud.delete_patient(db=db, patient_id=patient_id)
+        
+        return {
+            "message": f"Patient '{patient_name}' and {report_count} associated reports deleted successfully via CASCADE deletion.",
+            "deleted_patient": {
+                "id": patient_id,
+                "name": patient_name,
+                "deleted_reports_count": report_count
+            }
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to delete patient: {str(e)}"
+        )
