@@ -40,6 +40,27 @@ const PatientDetails = ({ patient, onBack }) => {
         setSelectedReport(null);
     };
 
+    const handleDeleteReport = async (reportId, reportFilename) => {
+        if (!window.confirm(`Are you sure you want to delete the report "${reportFilename}"? This action cannot be undone.`)) {
+            return;
+        }
+
+        try {
+            await axios.delete(`/api/patients/delete-report/${reportId}`);
+            alert('Report deleted successfully');
+            refreshPatientData(); // Refresh to show updated list
+        } catch (error) {
+            console.error('Failed to delete report:', error);
+            if (error.response?.status === 403) {
+                alert('You do not have permission to delete reports. Only Admins and Doctors can delete reports.');
+            } else if (error.response?.status === 404) {
+                alert('Report not found');
+            } else {
+                alert('Failed to delete report. Please try again.');
+            }
+        }
+    };
+
     const handleDeletePatient = async () => {
         if (!window.confirm(`Are you sure you want to delete patient "${patientData.name}"? This action cannot be undone and will delete all associated reports.`)) {
             return;
@@ -157,6 +178,13 @@ const PatientDetails = ({ patient, onBack }) => {
                                             onClick={() => handleViewResults(report)}
                                         >
                                             View Results
+                                        </button>
+                                        <button
+                                            className="btn btn-sm btn-danger"
+                                            onClick={() => handleDeleteReport(report.id, report.filename)}
+                                            title="Delete Report"
+                                        >
+                                            Delete
                                         </button>
                                     </div>
                                 </div>

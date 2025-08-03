@@ -62,6 +62,22 @@ def create_report_for_patient(db: Session, report: schemas.ReportCreate, patient
     db.refresh(db_report)
     return db_report
 
+def get_report(db: Session, report_id: int) -> Optional[models.Report]:
+    """Retrieves a single report by its ID."""
+    return db.query(models.Report).filter(models.Report.id == report_id).first()
+
+def delete_report(db: Session, report_id: int) -> Optional[models.Report]:
+    """Deletes a report from the database by its ID."""
+    db_report = db.query(models.Report).filter(models.Report.id == report_id).first()
+    if db_report:
+        db.delete(db_report)
+        db.commit()
+    return db_report
+
+def get_reports_for_patient(db: Session, patient_id: int) -> List[models.Report]:
+    """Retrieves all reports for a specific patient."""
+    return db.query(models.Report).filter(models.Report.patient_id == patient_id).all()
+
 # --- Utility Functions ---
 
 def extract_patient_details_from_text(text: str) -> dict:

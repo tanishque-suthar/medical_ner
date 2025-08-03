@@ -320,3 +320,103 @@ def debug_pdf_extraction(
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Debug error: {str(e)}")
+
+@router.delete("/delete-report/{report_id}", response_model=dict)
+async def delete_report(
+    report_id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user)
+):
+    """
+    Delete a specific report by ID.
+    
+    Args:
+        report_id: ID of the report to delete
+        
+    Returns:
+        Success message confirming deletion
+        
+    Security:
+        - Only Admins and Doctors can delete reports
+        - Nurses and other roles are denied access
+    """
+    logger.info(f"User {current_user.username} ({current_user.role}) attempting to delete report ID: {report_id}")
+    
+    # Check user permissions
+    if current_user.role not in ["Admin", "Doctor"]:
+        logger.warning(f"Access denied: User {current_user.username} with role {current_user.role} tried to delete report")
+        raise HTTPException(
+            status_code=403, 
+            detail="Access denied. Only Admins and Doctors can delete reports."
+        )
+    
+    # Check if report exists
+    db_report = crud.get_report(db, report_id=report_id)
+    if not db_report:
+        logger.warning(f"Report with ID {report_id} not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Report not found"
+        )
+    
+    # Get patient info for logging
+    patient_name = db_report.patient.name if db_report.patient else "Unknown"
+    report_filename = db_report.filename
+    
+    try:
+        # Delete the report
+        deleted_report = crud.delete_report(db, report_id=report_id)
+        
+        if deleted_report:
+            logger.info(f"Successfully deleted report: {report_filename} for patient: {patient_name}")
+            return {
+                "message": "Report deleted successfully",
+                "deleted_report": {
+                    "id": deleted_report.id,
+                    "filename": deleted_report.filename,
+                    "patient_name": patient_name
+                }
+            }
+        else:
+            logger.error(f"Failed to delete report ID: {report_id}")
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to delete report"
+            )
+            
+    except Exception as e:
+        logger.error(f"Error deleting report ID {report_id}: {str(e)}")
+        logger.error(traceback.format_exc())
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred while deleting the report: {str(e)}"
+        )
+
+@router.get("/get-report/{report_id}", response_model=schemas.Report)
+async def get_report(
+    report_id: int,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user)
+):
+    """
+    Get a specific report by ID.
+    
+    Args:
+        report_id: ID of the report to retrieve
+        
+    Returns:
+        Report details including analysis results
+    """
+    logger.info(f"User {current_user.username} requesting report ID: {report_id}")
+    
+    # Get the report
+    db_report = crud.get_report(db, report_id=report_id)
+    if not db_report:
+        logger.warning(f"Report with ID {report_id} not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Report not found"
+        )
+    
+    logger.info(f"Successfully retrieved report: {db_report.filename}")
+    return db_report

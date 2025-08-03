@@ -1,6 +1,7 @@
 # main.py
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 # --- CORRECTED IMPORTS ---
 from api.routers import reports, patients, auth, xray
 from db.database import engine
@@ -13,6 +14,15 @@ app = FastAPI(
     title="Hospital Medical Analyzer API",
     description="The main backend server for the medical analysis platform.",
     version="1.0.0"
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],  # Vite dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Include all the different routers
