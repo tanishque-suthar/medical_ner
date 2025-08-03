@@ -1,9 +1,9 @@
-/* Patient Selector Styles */
-.patient-selector {
+/* X-Ray Patient Selector Styles */
+.xray-patient-selector {
     width: 100%;
 }
 
-.patient-selector-header {
+.xray-patient-selector-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -12,7 +12,7 @@
     border-bottom: 1px solid #e2e8f0;
 }
 
-.patient-selector-header h3 {
+.xray-patient-selector-header h3 {
     font-size: 1.1rem;
     font-weight: 600;
     color: #1e293b;
@@ -20,27 +20,27 @@
 }
 
 /* Selected Patient Card */
-.selected-patient-card {
+.xray-selected-patient-card {
     border: 2px solid #10b981;
     border-radius: 0.5rem;
     padding: 1rem;
     background: #f0fdf4;
 }
 
-.patient-info h4 {
+.xray-patient-info h4 {
     font-size: 1.1rem;
     font-weight: 600;
     color: #065f46;
     margin: 0 0 0.5rem 0;
 }
 
-.patient-details {
+.xray-patient-details {
     display: block;
     gap: 1rem;
     margin-bottom: 0.5rem;
 }
 
-.patient-details span {
+.xray-patient-details span {
     font-size: 0.875rem;
     color: #374151;
     background: #fff;
@@ -49,24 +49,24 @@
     border: 1px solid #d1d5db;
 }
 
-.patient-reports {
+.xray-patient-reports {
     font-size: 0.875rem;
     color: #6b7280;
     margin-bottom: 1rem;
 }
 
 /* Search Container */
-.patient-search-container {
+.xray-patient-search-container {
     position: relative;
 }
 
-.search-input-container {
+.xray-search-input-container {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-.search-icon {
+.xray-search-icon {
     position: absolute;
     left: 0.75rem;
     color: #6b7280;
@@ -75,10 +75,10 @@
     pointer-events: none;
 }
 
-.patient-search-input {
+.xray-patient-search-input {
     width: 100%;
     padding: 0.75rem 1rem;
-    padding-left: 2.5rem;
+    padding-left: 1rem;
     padding-right: 2.5rem;
     border: 1px solid #d1d5db;
     border-radius: 0.5rem;
@@ -86,13 +86,13 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.patient-search-input:focus {
+.xray-patient-search-input:focus {
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.dropdown-toggle {
+.xray-dropdown-toggle {
     position: absolute;
     right: 0.5rem;
     background: none;
@@ -109,13 +109,13 @@
     transition: color 0.2s, background-color 0.2s;
 }
 
-.dropdown-toggle:hover {
+.xray-dropdown-toggle:hover {
     color: #374151;
     background-color: #f3f4f6;
 }
 
 /* Patients Dropdown */
-.patients-dropdown {
+.xray-patients-dropdown {
     position: absolute;
     top: calc(100% + 0.25rem);
     left: 0;
@@ -129,38 +129,38 @@
     overflow-y: auto;
 }
 
-.patients-list {
+.xray-patients-list {
     padding: 0.5rem 0;
 }
 
-.patient-option {
+.xray-patient-option {
     padding: 0.75rem 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
     border-bottom: 1px solid #f1f5f9;
 }
 
-.patient-option:hover {
+.xray-patient-option:hover {
     background: #f8fafc;
 }
 
-.patient-option:last-child {
+.xray-patient-option:last-child {
     border-bottom: none;
 }
 
-.patient-option-main {
+.xray-patient-option-main {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.25rem;
 }
 
-.patient-name {
+.xray-patient-name {
     font-weight: 500;
     color: #1e293b;
 }
 
-.patient-id {
+.xray-patient-id {
     font-size: 0.8rem;
     color: #64748b;
     background: #f1f5f9;
@@ -168,39 +168,39 @@
     border-radius: 0.25rem;
 }
 
-.patient-option-details {
+.xray-patient-option-details {
     display: flex;
     justify-content: space-between;
     font-size: 0.8rem;
     color: #6b7280;
 }
 
-.no-patients-found {
+.xray-no-patients-found {
     padding: 2rem 1rem;
     text-align: center;
     color: #6b7280;
 }
 
-.no-patients-found p {
+.xray-no-patients-found p {
     margin: 0;
     font-size: 0.875rem;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .patient-details {
+    .xray-patient-details {
         flex-direction: column;
         gap: 0.5rem;
     }
 
-    .patient-option-main,
-    .patient-option-details {
+    .xray-patient-option-main,
+    .xray-patient-option-details {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.25rem;
     }
 
-    .patients-dropdown {
+    .xray-patients-dropdown {
         max-height: 250px;
     }
 }

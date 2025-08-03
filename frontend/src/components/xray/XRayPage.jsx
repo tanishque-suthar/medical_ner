@@ -33,6 +33,11 @@ const XRayPage = () => {
         setSelectedPatient(patient);
     };
 
+    const handleClearSelection = () => {
+        setSelectedPatient(null);
+        setActiveTab('analysis'); // Reset to default tab
+    };
+
     if (loading) {
         return (
             <div className="xray-page">
@@ -67,33 +72,52 @@ const XRayPage = () => {
             </div>
 
             <div className="xray-content">
-                <div className="xray-patient-section">
-                    <PatientSelector
-                        patients={patients}
-                        selectedPatient={selectedPatient}
-                        onPatientSelect={handlePatientSelect}
-                    />
-                </div>
+                {!selectedPatient ? (
+                    // Show only patient selector when no patient is selected
+                    <div className="xray-patient-selection-view">
+                        <div className="xray-patient-selector-container">
+                            <PatientSelector
+                                patients={patients}
+                                selectedPatient={selectedPatient}
+                                onPatientSelect={handlePatientSelect}
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    // Show analysis section when patient is selected
+                    <div className="xray-analysis-view">
+                        <div className="xray-analysis-header">
+                            <div className="xray-selected-patient-info">
+                                <h3>{selectedPatient.name}</h3>
+                                <span className="xray-patient-details">
+                                    ID: {selectedPatient.id} | Age: {selectedPatient.age} | Gender: {selectedPatient.gender}
+                                </span>
+                            </div>
+                            <button
+                                onClick={handleClearSelection}
+                                className="btn btn-secondary xray-back-button"
+                            >
+                                ← Back to Patient Selection
+                            </button>
+                        </div>
 
-                <div className="xray-analysis-section">
-                    {selectedPatient ? (
-                        <div className="analysis-tabs-container">
-                            <div className="analysis-tabs">
+                        <div className="xray-analysis-tabs-container">
+                            <div className="xray-analysis-tabs">
                                 <button
                                     onClick={() => setActiveTab('analysis')}
-                                    className={`tab-button ${activeTab === 'analysis' ? 'active' : ''}`}
+                                    className={`xray-tab-button ${activeTab === 'analysis' ? 'active' : ''}`}
                                 >
                                     Single Analysis
                                 </button>
                                 <button
                                     onClick={() => setActiveTab('comparison')}
-                                    className={`tab-button ${activeTab === 'comparison' ? 'active' : ''}`}
+                                    className={`xray-tab-button ${activeTab === 'comparison' ? 'active' : ''}`}
                                 >
                                     Compare X-Rays
                                 </button>
                             </div>
 
-                            <div className="tab-content">
+                            <div className="xray-tab-content">
                                 {activeTab === 'analysis' && (
                                     <XRayAnalysis patient={selectedPatient} />
                                 )}
@@ -102,14 +126,8 @@ const XRayPage = () => {
                                 )}
                             </div>
                         </div>
-                    ) : (
-                        <div className="no-patient-selected">
-                            <div className="no-patient-icon">X-Ray</div>
-                            <h3>Select a Patient</h3>
-                            <p>Choose a patient from the list above to begin X-ray analysis or comparison</p>
-                        </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     );

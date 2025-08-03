@@ -40,8 +40,8 @@ const PatientSelector = ({ patients, selectedPatient, onPatientSelect }) => {
     };
 
     return (
-        <div className="patient-selector">
-            <div className="patient-selector-header">
+        <div className="xray-patient-selector">
+            <div className="xray-patient-selector-header">
                 <h3>Select Patient</h3>
                 {selectedPatient && (
                     <button
@@ -55,34 +55,33 @@ const PatientSelector = ({ patients, selectedPatient, onPatientSelect }) => {
             </div>
 
             {selectedPatient ? (
-                <div className="selected-patient-card">
-                    <div className="patient-info">
+                <div className="xray-selected-patient-card">
+                    <div className="xray-patient-info">
                         <h4>{selectedPatient.name}</h4>
-                        <div className="patient-details">
+                        <div className="xray-patient-details">
                             <span>ID: {selectedPatient.id}</span>
                             <span>Age: {selectedPatient.age}</span>
                             <span>Gender: {selectedPatient.gender}</span>
                         </div>
-                        <div className="patient-reports">
+                        <div className="xray-patient-reports">
                             {selectedPatient.reports?.length || 0} existing reports
                         </div>
                     </div>
                 </div>
             ) : (
-                <div className="patient-search-container">
-                    <div className="search-input-container">
-                        <div className="search-icon">🔍</div>
+                <div className="xray-patient-search-container">
+                    <div className="xray-search-input-container">
                         <input
                             type="text"
                             placeholder="Search patients by name, ID, age, or gender..."
                             value={searchTerm}
                             onChange={handleSearchChange}
                             onFocus={() => setIsDropdownOpen(true)}
-                            className="patient-search-input"
+                            className="xray-patient-search-input"
                         />
                         <button
                             onClick={toggleDropdown}
-                            className="dropdown-toggle"
+                            className="xray-dropdown-toggle"
                             title={isDropdownOpen ? "Hide patients" : "Show all patients"}
                         >
                             {isDropdownOpen ? '▲' : '▼'}
@@ -90,20 +89,20 @@ const PatientSelector = ({ patients, selectedPatient, onPatientSelect }) => {
                     </div>
 
                     {isDropdownOpen && (
-                        <div className="patients-dropdown">
+                        <div className="xray-patients-dropdown">
                             {filteredPatients.length > 0 ? (
-                                <div className="patients-list">
+                                <div className="xray-patients-list">
                                     {filteredPatients.map(patient => (
                                         <div
                                             key={patient.id}
-                                            className="patient-option"
+                                            className="xray-patient-option"
                                             onClick={() => handlePatientSelect(patient)}
                                         >
-                                            <div className="patient-option-main">
-                                                <span className="patient-name">{patient.name}</span>
-                                                <span className="patient-id">#{patient.id}</span>
+                                            <div className="xray-patient-option-main">
+                                                <span className="xray-patient-name">{patient.name}</span>
+                                                <span className="xray-patient-id">#{patient.id}</span>
                                             </div>
-                                            <div className="patient-option-details">
+                                            <div className="xray-patient-option-details">
                                                 <span>{patient.age}y, {patient.gender}</span>
                                                 <span>{patient.reports?.length || 0} reports</span>
                                             </div>
@@ -111,7 +110,7 @@ const PatientSelector = ({ patients, selectedPatient, onPatientSelect }) => {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="no-patients-found">
+                                <div className="xray-no-patients-found">
                                     <p>No patients found matching "{searchTerm}"</p>
                                 </div>
                             )}
