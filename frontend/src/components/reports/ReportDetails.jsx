@@ -15,7 +15,14 @@ const ReportDetails = ({ report, onClose }) => {
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleString();
+    return new Date(dateString).toLocaleString('en-GB', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Asia/Kolkata'
+    });
   };
 
   const getEntityTypeColor = (entityType) => {
@@ -220,6 +227,12 @@ const ReportDetails = ({ report, onClose }) => {
               <div className="summary-item">
                 <span className="summary-label">Report ID:</span>
                 <span className="summary-value">#{report.id}</span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">Upload Date:</span>
+                <span className="summary-value">
+                  {formatDate(report.created_at)}
+                </span>
               </div>
               {!isXrayReport(report.report_type) && (
                 <>

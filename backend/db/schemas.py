@@ -2,6 +2,7 @@
 
 from pydantic import BaseModel
 from typing import List, Optional
+from datetime import datetime
 from db.models import ReportType
 
 # --- Base Schemas ---
@@ -34,6 +35,7 @@ class ReportCreate(ReportBase):
 class Report(ReportBase):
     id: int
     patient_id: int
+    created_at: datetime
     
     class Config:
         from_attributes = True

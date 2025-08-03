@@ -15,7 +15,14 @@ const ReportResults = ({ report, onClose }) => {
 
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A';
-        return new Date(dateString).toLocaleString();
+        return new Date(dateString).toLocaleString('en-GB', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'Asia/Kolkata'
+        });
     };
 
     const getEntityTypeColor = (entityType) => {
@@ -125,11 +132,11 @@ const ReportResults = ({ report, onClose }) => {
 
     const renderXRayResults = () => {
         const results = report.results || {};
-        
+
         if (report.report_type === 'XRAY_ANALYSIS') {
             const pathologies = results.pathologies || [];
             const detectedPathologies = pathologies.filter(p => p.detected);
-            
+
             return (
                 <div className="xray-results-section">
                     <div className="pathologies-summary">

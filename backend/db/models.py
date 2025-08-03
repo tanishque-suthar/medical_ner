@@ -1,9 +1,17 @@
 # app/db/models.py
 
-from sqlalchemy import Column, Integer, String, Enum, ForeignKey, JSON, Boolean
+from sqlalchemy import Column, Integer, String, Enum, ForeignKey, JSON, Boolean, DateTime
 from sqlalchemy.orm import relationship
 from db.database import Base
 import enum
+from datetime import datetime, timezone, timedelta
+
+# India timezone (UTC+5:30)
+IST = timezone(timedelta(hours=5, minutes=30))
+
+def get_ist_now():
+    """Get current time in Indian Standard Time"""
+    return datetime.now(IST)
 
 class User(Base):
     __tablename__ = "users"
@@ -44,6 +52,9 @@ class Report(Base):
     # Using JSON type is highly flexible for storing structured results
     # like a list of entities or a full analysis report.
     results = Column(JSON)
+    
+    # Timestamp for when the report was created/uploaded (IST)
+    created_at = Column(DateTime, default=get_ist_now)
     
     patient_id = Column(Integer, ForeignKey("patients.id", ondelete="CASCADE"))
     

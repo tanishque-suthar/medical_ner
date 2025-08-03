@@ -167,6 +167,13 @@
     margin-left: 0.25rem;
 }
 
+/* Upload Time Styling */
+.reports-upload-time {
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .report-card {
