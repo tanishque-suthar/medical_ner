@@ -1,15 +1,76 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import './DashboardNew.css';
 
 const Dashboard = ({ onNavigate }) => {
     const { user } = useAuth();
+    const [stats, setStats] = useState({
+        totalPatients: 0,
+        reportsAnalyzed: 0,
+        xraysProcessed: 0,
+        systemStatus: 'Active'
+    });
+    const [loading, setLoading] = useState(true);
 
     const handleCardClick = (page) => {
         if (onNavigate) {
             onNavigate(page);
         }
     };
+
+    // Fetch dashboard statistics from existing endpoints
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                setLoading(true);
+
+                // Fetch all patients (which includes their reports via relationship)
+                const patientsResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/patients/get-all-patients`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (patientsResponse.ok) {
+                    const patientsData = await patientsResponse.json();
+
+                    // Calculate statistics from patients data
+                    const totalPatients = patientsData.length;
+
+                    // Count total reports across all patients
+                    const totalReports = patientsData.reduce((total, patient) => {
+                        return total + (patient.reports ? patient.reports.length : 0);
+                    }, 0);
+
+                    // Count X-ray reports (reports with report_type containing 'XRAY')
+                    const xrayReports = patientsData.reduce((total, patient) => {
+                        if (patient.reports) {
+                            const xrayCount = patient.reports.filter(report =>
+                                report.report_type && report.report_type.includes('XRAY')
+                            ).length;
+                            return total + xrayCount;
+                        }
+                        return total;
+                    }, 0);
+
+                    setStats({
+                        totalPatients: totalPatients,
+                        reportsAnalyzed: totalReports,
+                        xraysProcessed: xrayReports,
+                        systemStatus: 'Active'
+                    });
+                } else {
+                    console.error('Failed to fetch patients data');
+                }
+            } catch (error) {
+                console.error('Error fetching dashboard stats:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStats();
+    }, []);
 
     return (
         <div className="dashboard">
@@ -26,7 +87,7 @@ const Dashboard = ({ onNavigate }) => {
                     <div className="dashboard-card" onClick={() => handleCardClick('patients')}>
                         <div className="card-header">
                             <h3>Patient Management</h3>
-                            <div className="card-icon patient-icon">👥</div>
+                            <div className="card-icon patient-icon"><i className="fa-solid fa-hospital-user"></i></div>
                         </div>
                         <p>Manage patient records and view medical histories</p>
                         <button className="card-button">
@@ -38,7 +99,7 @@ const Dashboard = ({ onNavigate }) => {
                     <div className="dashboard-card" onClick={() => handleCardClick('reports')}>
                         <div className="card-header">
                             <h3>Medical Reports</h3>
-                            <div className="card-icon reports-icon">📋</div>
+                            <div className="card-icon reports-icon"><i className="fa-solid fa-book"></i></div>
                         </div>
                         <p>Analyze medical reports with AI-powered NER</p>
                         <button className="card-button">
@@ -50,7 +111,7 @@ const Dashboard = ({ onNavigate }) => {
                     <div className="dashboard-card" onClick={() => handleCardClick('xray')}>
                         <div className="card-header">
                             <h3>X-Ray Analysis</h3>
-                            <div className="card-icon xray-icon">🩻</div>
+                            <div className="card-icon xray-icon"><i className="fa-solid fa-x-ray"></i></div>
                         </div>
                         <p>AI-powered X-ray analysis and pathology detection</p>
                         <button className="card-button">
@@ -64,19 +125,27 @@ const Dashboard = ({ onNavigate }) => {
                     <h3>Quick Stats</h3>
                     <div className="stats-grid">
                         <div className="stat-item">
-                            <div className="stat-value">--</div>
+                            <div className="stat-value">
+                                {loading ? '...' : stats.totalPatients}
+                            </div>
                             <div className="stat-label">Total Patients</div>
                         </div>
                         <div className="stat-item">
-                            <div className="stat-value">--</div>
+                            <div className="stat-value">
+                                {loading ? '...' : stats.reportsAnalyzed}
+                            </div>
                             <div className="stat-label">Reports Analyzed</div>
                         </div>
                         <div className="stat-item">
-                            <div className="stat-value">--</div>
+                            <div className="stat-value">
+                                {loading ? '...' : stats.xraysProcessed}
+                            </div>
                             <div className="stat-label">X-Rays Processed</div>
                         </div>
                         <div className="stat-item">
-                            <div className="stat-value status-active">Active</div>
+                            <div className={`stat-value ${stats.systemStatus.toLowerCase()}`}>
+                                {stats.systemStatus}
+                            </div>
                             <div className="stat-label">System Status</div>
                         </div>
                     </div>

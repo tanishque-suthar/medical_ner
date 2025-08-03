@@ -36,7 +36,6 @@ const Header = ({ currentPage, onNavigate }) => {
 
                 <div className="header-right">
                     <div className="user-info">
-                        <span className="username">Welcome, {user?.username}</span>
                         <span className="user-role">{user?.role}</span>
                     </div>
 
