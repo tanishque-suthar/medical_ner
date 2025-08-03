@@ -136,6 +136,37 @@
     background: #2563eb;
 }
 
+/* X-Ray Report Info Styles */
+.reports-xray-info {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.reports-pathology-count {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.reports-pathology-count.detected {
+    color: #dc2626;
+}
+
+.reports-pathology-count.total {
+    color: #374151;
+}
+
+.reports-pathology-separator {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.reports-pathology-label {
+    color: #6b7280;
+    font-size: 0.75rem;
+    margin-left: 0.25rem;
+}
+
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .report-card {
@@ -159,6 +190,10 @@
     }
 
     .report-card-row .entities-count {
+        align-items: flex-start;
+    }
+
+    .reports-xray-info {
         align-items: flex-start;
     }
 }

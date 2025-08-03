@@ -90,8 +90,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Report Summary Section */
@@ -297,6 +302,164 @@
   background: #2563eb;
 }
 
+/* X-Ray Results Styles */
+.reports-xray-analysis-section,
+.reports-xray-comparison-section {
+  margin-bottom: 2rem;
+}
+
+.reports-xray-analysis-section h4,
+.reports-xray-comparison-section h4 {
+  color: #1f2937;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #3b82f6;
+  padding-bottom: 0.5rem;
+}
+
+/* Pathology Detection Styles */
+.reports-xray-pathologies {
+  margin-bottom: 1.5rem;
+}
+
+.reports-xray-pathologies h5 {
+  color: #374151;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.reports-pathology-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.reports-pathology-item {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.reports-pathology-item.detected {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.reports-pathology-item.not-detected {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+
+.reports-pathology-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.reports-pathology-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+}
+
+.reports-pathology-status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.reports-pathology-status.positive {
+  background: #ef4444;
+  color: white;
+}
+
+.reports-pathology-status.negative {
+  background: #10b981;
+  color: white;
+}
+
+.reports-pathology-confidence {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reports-confidence-bar {
+  flex: 1;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.reports-confidence-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.reports-confidence-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  min-width: 45px;
+  text-align: right;
+}
+
+.reports-no-pathologies {
+  color: #6b7280;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+/* Generated Report Styles */
+.reports-xray-generated-report,
+.reports-comparison-report {
+  margin-top: 1.5rem;
+}
+
+.reports-xray-generated-report h5,
+.reports-comparison-report h5 {
+  color: #374151;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.reports-generated-report-content,
+.reports-comparison-content {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.reports-generated-report-content p,
+.reports-comparison-content p {
+  margin: 0;
+  line-height: 1.6;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+.reports-no-comparison {
+  color: #6b7280;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .report-details-modal {
@@ -304,29 +467,39 @@
     max-height: 95vh;
     margin: 10px;
   }
-  
+
   .modal-header,
   .report-details-content,
   .modal-footer {
     padding-left: 16px;
     padding-right: 16px;
   }
-  
+
   .summary-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .entity-items {
     justify-content: center;
   }
-  
+
   .modal-header {
     flex-direction: column;
     gap: 1rem;
     align-items: stretch;
   }
-  
+
   .close-button {
     align-self: flex-end;
+  }
+
+  .reports-pathology-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-pathology-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }

@@ -31,6 +31,26 @@ const ReportCard = ({ report, onViewReport }) => {
     return report.results.entities.length;
   };
 
+  const getXrayInfo = (report) => {
+    if (!report.results) return null;
+
+    if (report.report_type === 'XRAY_ANALYSIS') {
+      const pathologies = report.results.pathologies || [];
+      const detectedCount = pathologies.filter(p => p.detected).length;
+      return { type: 'pathologies', detected: detectedCount, total: pathologies.length };
+    }
+
+    if (report.report_type === 'XRAY_COMPARISON') {
+      return { type: 'comparison', hasReport: !!report.results.comparison_report };
+    }
+
+    return null;
+  };
+
+  const isXrayReport = (reportType) => {
+    return reportType === 'XRAY_ANALYSIS' || reportType === 'XRAY_COMPARISON';
+  };
+
   return (
     <div className="report-card">
       <div className="report-card-header">
@@ -42,7 +62,7 @@ const ReportCard = ({ report, onViewReport }) => {
           {getReportTypeDisplay(report.report_type)}
         </span>
       </div>
-      
+
       <div className="report-card-content">
         <div className="report-card-row">
           <span className="label">Patient:</span>
@@ -51,21 +71,52 @@ const ReportCard = ({ report, onViewReport }) => {
             {report.patient_age && ` (${report.patient_age}y, ${report.patient_gender})`}
           </span>
         </div>
-        
+
         <div className="report-card-row">
           <span className="label">Report ID:</span>
           <span className="value">#{report.id}</span>
         </div>
-        
-        <div className="report-card-row">
-          <span className="label">Entities Found:</span>
-          <span className="value entities-count">
-            <span className="entities-number">{getEntityCount(report)}</span>
-            <span className="entities-label">entities</span>
-          </span>
-        </div>
+
+        {isXrayReport(report.report_type) ? (
+          <div className="report-card-row">
+            <span className="label">
+              {report.report_type === 'XRAY_ANALYSIS' ? 'Pathologies:' : 'Analysis:'}
+            </span>
+            <span className="value reports-xray-info">
+              {(() => {
+                const xrayInfo = getXrayInfo(report);
+                if (!xrayInfo) return 'No data';
+
+                if (xrayInfo.type === 'pathologies') {
+                  return (
+                    <>
+                      <span className="reports-pathology-count detected">{xrayInfo.detected}</span>
+                      <span className="reports-pathology-separator">/</span>
+                      <span className="reports-pathology-count total">{xrayInfo.total}</span>
+                      <span className="reports-pathology-label">detected</span>
+                    </>
+                  );
+                }
+
+                if (xrayInfo.type === 'comparison') {
+                  return xrayInfo.hasReport ? 'Comparison complete' : 'No comparison data';
+                }
+
+                return 'No data';
+              })()}
+            </span>
+          </div>
+        ) : (
+          <div className="report-card-row">
+            <span className="label">Entities Found:</span>
+            <span className="value entities-count">
+              <span className="entities-number">{getEntityCount(report)}</span>
+              <span className="entities-label">entities</span>
+            </span>
+          </div>
+        )}
       </div>
-      
+
       <div className="report-card-actions">
         <button
           onClick={() => onViewReport(report)}
