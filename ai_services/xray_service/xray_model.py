@@ -156,7 +156,10 @@ class XRayAnalysisModel:
         prompt = f"""
         You are an expert radiologist. Analyze and compare the two medical reports from a previous and a current X-ray.
         Highlight key differences, signs of progression, regression, or new findings.
-        Provide a concise and clear comparison.
+        Provide a concise and clear comparison in plain text format without any markdown formatting, asterisks, or special characters.
+
+        Use clean, professional medical language with clear section headers followed by colons.
+        Use simple dashes (-) for bullet points if needed, but prefer paragraph format.
 
         Previous Report:
         ---
@@ -168,10 +171,22 @@ class XRayAnalysisModel:
         {report2}
         ---
         
-        Comparison Analysis:
+        Please provide a clean, professional comparison analysis in plain text format:
         """
         response = self.gemini_model.generate_content(prompt)
-        return response.text
+        
+        # Clean up any remaining markdown formatting
+        cleaned_text = response.text
+        # Remove asterisks used for bold/italic
+        cleaned_text = cleaned_text.replace('**', '').replace('*', '')
+        # Remove markdown headers
+        cleaned_text = cleaned_text.replace('###', '').replace('##', '').replace('#', '')
+        # Clean up extra spaces
+        cleaned_text = ' '.join(cleaned_text.split())
+        # Add proper line breaks for readability
+        cleaned_text = cleaned_text.replace('. ', '.\n\n')
+        
+        return cleaned_text
 
 # Instantiate the model class as a singleton
 xray_model_instance = XRayAnalysisModel()

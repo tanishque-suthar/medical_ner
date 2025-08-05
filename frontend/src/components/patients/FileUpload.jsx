@@ -8,6 +8,8 @@ const FileUpload = ({ patientId, onSuccess, onCancel }) => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState('');
     const [processingStatus, setProcessingStatus] = useState('');
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [showProgress, setShowProgress] = useState(false);
     const fileInputRef = useRef(null);
 
     const handleFileSelect = (file) => {
@@ -59,6 +61,8 @@ const FileUpload = ({ patientId, onSuccess, onCancel }) => {
 
         setIsProcessing(true);
         setError('');
+        setUploadProgress(0);
+        setShowProgress(true);
 
         try {
             console.log('=== UPLOAD DEBUG INFO ===');
@@ -85,17 +89,29 @@ const FileUpload = ({ patientId, onSuccess, onCancel }) => {
             }
 
             console.log('Using endpoint with query params:', endpoint);
-            setProcessingStatus('Processing medical report with NER...');
-
+            
             const response = await axios.post(endpoint, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                },
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round(
+                        (progressEvent.loaded * 100) / progressEvent.total
+                    );
+                    setUploadProgress(percentCompleted);
+                    
+                    if (percentCompleted < 100) {
+                        setProcessingStatus(`Uploading file... ${percentCompleted}%`);
+                    } else {
+                        setProcessingStatus('Processing medical report with NER...');
+                    }
                 },
             });
 
             console.log('Upload successful:', response.data);
             console.log('=== END DEBUG INFO ===');
             setProcessingStatus('Analysis complete!');
+            setUploadProgress(100);
 
             // Wait a moment to show completion message
             setTimeout(() => {
@@ -111,6 +127,16 @@ const FileUpload = ({ patientId, onSuccess, onCancel }) => {
             setError(error.response?.data?.detail || 'Upload failed');
             setIsProcessing(false);
             setProcessingStatus('');
+            setShowProgress(false);
+            setUploadProgress(0);
+        } finally {
+            // Reset progress after a delay if successful
+            if (!error) {
+                setTimeout(() => {
+                    setShowProgress(false);
+                    setUploadProgress(0);
+                }, 2000);
+            }
         }
     };
 
@@ -209,6 +235,22 @@ const FileUpload = ({ patientId, onSuccess, onCancel }) => {
                             <div className="processing-spinner"></div>
                             <h4>Processing Report...</h4>
                             <p className="processing-status">{processingStatus}</p>
+                            
+                            {/* Upload Progress Bar */}
+                            {showProgress && (
+                                <div className="upload-progress">
+                                    <div className="progress-bar-container">
+                                        <div 
+                                            className="progress-bar"
+                                            style={{ width: `${uploadProgress}%` }}
+                                        ></div>
+                                    </div>
+                                    <div className="progress-text">
+                                        {uploadProgress < 100 ? `${uploadProgress}%` : 'Processing...'}
+                                    </div>
+                                </div>
+                            )}
+                            
                             <div className="processing-info">
                                 <p>Our AI is analyzing your file. This may take a few moments.</p>
                             </div>

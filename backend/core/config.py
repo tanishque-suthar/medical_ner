@@ -30,6 +30,10 @@ class Settings(BaseSettings):
     NER_SERVICE_URL: str = os.getenv("NER_SERVICE_URL", "http://localhost:5001")
     XRAY_SERVICE_URL: str = os.getenv("XRAY_SERVICE_URL", "http://localhost:5002")
     
+    # --- Gemini API Key ---
+    # Google Gemini API key for X-ray analysis and comparison
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    
     # --- JWT Security Settings ---
     # This key MUST be kept secret and should be a long, random string.
     # It's critical to set this in your .env file for production.

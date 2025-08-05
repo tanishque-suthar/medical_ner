@@ -9,6 +9,8 @@ const XRayAnalysis = ({ patient }) => {
     const [analyzing, setAnalyzing] = useState(false);
     const [results, setResults] = useState(null);
     const [error, setError] = useState('');
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [showProgress, setShowProgress] = useState(false);
 
     const handleFileSelect = (file) => {
         setSelectedFile(file);
@@ -21,6 +23,8 @@ const XRayAnalysis = ({ patient }) => {
 
         setAnalyzing(true);
         setError('');
+        setUploadProgress(0);
+        setShowProgress(true);
 
         const formData = new FormData();
         formData.append('file', selectedFile);
@@ -33,7 +37,13 @@ const XRayAnalysis = ({ patient }) => {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     },
-                    timeout: 90000 // 90 seconds timeout for AI processing
+                    timeout: 90000, // 90 seconds timeout for AI processing
+                    onUploadProgress: (progressEvent) => {
+                        const percentCompleted = Math.round(
+                            (progressEvent.loaded * 100) / progressEvent.total
+                        );
+                        setUploadProgress(percentCompleted);
+                    },
                 }
             );
 
@@ -51,6 +61,10 @@ const XRayAnalysis = ({ patient }) => {
             }
         } finally {
             setAnalyzing(false);
+            setTimeout(() => {
+                setShowProgress(false);
+                setUploadProgress(0);
+            }, 2000);
         }
     };
 
