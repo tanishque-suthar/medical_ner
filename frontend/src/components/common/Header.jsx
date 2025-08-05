@@ -1,9 +1,11 @@
 import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import './Header.css';
 
 const Header = ({ currentPage, onNavigate }) => {
     const { user, logout } = useAuth();
+    const { isDarkMode, toggleTheme } = useTheme();
 
     const handleLogout = () => {
         logout();
@@ -38,6 +40,14 @@ const Header = ({ currentPage, onNavigate }) => {
                     <div className="user-info">
                         <span className="user-role">{user?.role}</span>
                     </div>
+
+                    <button 
+                        onClick={toggleTheme} 
+                        className="theme-toggle-button"
+                        title={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
+                    >
+                        {isDarkMode ? '☀️' : '🌙'}
+                    </button>
 
                     <button onClick={handleLogout} className="logout-button">
                         Logout

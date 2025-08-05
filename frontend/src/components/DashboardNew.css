@@ -13,14 +13,16 @@
 .dashboard-welcome h1 {
     font-size: 2rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--text-primary);
     margin: 0 0 0.5rem 0;
+    transition: color 0.3s ease;
 }
 
 .dashboard-welcome p {
     font-size: 1rem;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin: 0;
+    transition: color 0.3s ease;
 }
 
 .dashboard-content {
@@ -36,17 +38,17 @@
 }
 
 .dashboard-card {
-    background: #fff;
+    background: var(--bg-primary);
     border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
     padding: 1.5rem;
     cursor: pointer;
     transition: all 0.2s;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-primary);
 }
 
 .dashboard-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
     transform: translateY(-2px);
 }
 
@@ -60,40 +62,46 @@
 .card-header h3 {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--text-primary);
     margin: 0;
+    transition: color 0.3s ease;
 }
 
 .card-icon {
     font-size: 2rem;
     padding: 0.5rem;
     border-radius: 0.5rem;
-    background: #f3f4f6;
+    background: var(--bg-tertiary);
+    transition: background-color 0.3s ease;
 }
 
 .patient-icon {
-    background: #dbeafe;
+    background: var(--info-bg);
+    color: var(--info-text);
 }
 
 .reports-icon {
-    background: #dcfce7;
+    background: var(--success-bg);
+    color: var(--success-text);
 }
 
 .xray-icon {
     background: #f3e8ff;
+    color: #7c3aed;
 }
 
 .dashboard-card p {
-    color: #6b7280;
+    color: var(--text-secondary);
     margin: 0 0 1.5rem 0;
     line-height: 1.5;
+    transition: color 0.3s ease;
 }
 
 .card-button {
     width: 100%;
     padding: 0.75rem;
-    background: #3b82f6;
-    color: #fff;
+    background: var(--accent-primary);
+    color: var(--text-inverse);
     border: none;
     border-radius: 0.375rem;
     font-size: 0.875rem;
@@ -107,18 +115,20 @@
 }
 
 .dashboard-stats {
-    background: #fff;
+    background: var(--bg-primary);
     border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
     padding: 1.5rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-primary);
+    transition: all 0.3s ease;
 }
 
 .dashboard-stats h3 {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #1f2937;
-    margin: 0 0 1.5rem 0;
+    color: var(--text-primary);
+    margin: 0 0 1rem 0;
+    transition: color 0.3s ease;
 }
 
 .stats-grid {

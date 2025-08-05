@@ -1,8 +1,9 @@
 /* Header Styles */
 .app-header {
-    background: #fff;
-    border-bottom: 1px solid #e5e7eb;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-primary);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
 }
 
 .header-container {
@@ -24,8 +25,9 @@
 .app-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--text-primary);
     margin: 0;
+    transition: color 0.3s ease;
 }
 
 .main-nav {
@@ -37,7 +39,7 @@
     padding: 0.5rem 1rem;
     background: none;
     border: none;
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 0.9rem;
     cursor: pointer;
     border-radius: 0.375rem;
@@ -45,13 +47,13 @@
 }
 
 .nav-button:hover {
-    background: #f3f4f6;
-    color: #374151;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
 .nav-button.active {
-    background: #3b82f6;
-    color: #fff;
+    background: var(--accent-primary);
+    color: var(--text-inverse);
 }
 
 .header-right {
@@ -69,22 +71,46 @@
 
 .username {
     font-size: 0.875rem;
-    color: #374151;
+    color: var(--text-primary);
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 .user-role {
     font-size: 0.75rem;
-    color: #6b7280;
-    background: #f3f4f6;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
     padding: 0.125rem 0.5rem;
     border-radius: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-button {
+    padding: 0.5rem;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-secondary);
+    border-radius: 0.375rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.theme-toggle-button:hover {
+    background: var(--bg-accent);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-sm);
 }
 
 .logout-button {
     padding: 0.5rem 1rem;
-    background: #ef4444;
-    color: #fff;
+    background: var(--accent-danger);
+    color: var(--text-inverse);
     border: none;
     border-radius: 0.375rem;
     font-size: 0.875rem;

@@ -1,6 +1,6 @@
 .login-page {
     min-height: 100vh;
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    background: linear-gradient(135deg, var(--info-bg) 0%, var(--accent-primary) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,25 +20,30 @@
 .login-icon {
     font-size: 3rem;
     margin-bottom: 1rem;
+    color: var(--text-inverse);
 }
 
 .login-header h2 {
     font-size: 2rem;
     font-weight: bold;
-    color: #1a202c;
+    color: var(--text-inverse);
     margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
 }
 
 .login-header p {
-    color: #6b7280;
+    color: var(--text-inverse);
     font-size: 1rem;
+    opacity: 0.9;
+    transition: color 0.3s ease;
 }
 
 .login-form-container {
-    background: white;
+    background: var(--bg-primary);
     border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
     padding: 2rem;
+    transition: all 0.3s ease;
 }
 
 .login-form {
