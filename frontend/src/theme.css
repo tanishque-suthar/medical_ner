@@ -1,0 +1,234 @@
+/* Global Theme Utilities */
+
+/* Smooth transitions for theme switching */
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Cards and Containers */
+.card, .modal, .dropdown, .panel {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.card:hover, .panel:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* Text Styles */
+.text-primary {
+    color: var(--text-primary);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.text-tertiary {
+    color: var(--text-tertiary);
+}
+
+.text-inverse {
+    color: var(--text-inverse);
+}
+
+/* Background Utilities */
+.bg-primary {
+    background-color: var(--bg-primary);
+}
+
+.bg-secondary {
+    background-color: var(--bg-secondary);
+}
+
+.bg-tertiary {
+    background-color: var(--bg-tertiary);
+}
+
+.bg-accent {
+    background-color: var(--bg-accent);
+}
+
+/* Border Utilities */
+.border-primary {
+    border-color: var(--border-primary);
+}
+
+.border-secondary {
+    border-color: var(--border-secondary);
+}
+
+/* Status Backgrounds */
+.status-success {
+    background-color: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success-text);
+}
+
+.status-error {
+    background-color: var(--error-bg);
+    border-color: var(--error-border);
+    color: var(--error-text);
+}
+
+.status-warning {
+    background-color: var(--warning-bg);
+    border-color: var(--warning-border);
+    color: var(--warning-text);
+}
+
+.status-info {
+    background-color: var(--info-bg);
+    border-color: var(--info-border);
+    color: var(--info-text);
+}
+
+/* Button Theme Overrides */
+.btn-theme-primary {
+    background-color: var(--accent-primary);
+    color: var(--text-inverse);
+    border-color: var(--accent-primary);
+}
+
+.btn-theme-primary:hover:not(:disabled) {
+    background-color: var(--accent-primary);
+    filter: brightness(0.9);
+}
+
+.btn-theme-secondary {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--border-secondary);
+}
+
+.btn-theme-secondary:hover:not(:disabled) {
+    background-color: var(--bg-accent);
+}
+
+/* Input Theme Overrides */
+.input-theme, .select-theme, .textarea-theme {
+    background-color: var(--bg-primary);
+    border-color: var(--border-secondary);
+    color: var(--text-primary);
+}
+
+.input-theme:focus, .select-theme:focus, .textarea-theme:focus {
+    border-color: var(--accent-primary);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.input-theme::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* Loading Spinner Theme */
+.loading-spinner-theme {
+    border-color: var(--border-accent);
+    border-top-color: var(--accent-primary);
+}
+
+/* Table Theme */
+.table-theme {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.table-theme th {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.table-theme td {
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.table-theme tr:hover {
+    background-color: var(--bg-tertiary);
+}
+
+/* Modal Theme */
+.modal-theme {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-theme .modal-header {
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.modal-theme .modal-footer {
+    border-top: 1px solid var(--border-primary);
+}
+
+/* Dropdown Theme */
+.dropdown-theme {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-secondary);
+    box-shadow: var(--shadow-md);
+}
+
+.dropdown-theme .dropdown-item {
+    color: var(--text-primary);
+}
+
+.dropdown-theme .dropdown-item:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* Progress Bar Theme */
+.progress-theme {
+    background-color: var(--bg-accent);
+}
+
+.progress-theme .progress-bar {
+    background-color: var(--accent-primary);
+}
+
+/* Alert Theme */
+.alert-theme {
+    border: 1px solid var(--border-primary);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* Scrollbar Theme for Webkit browsers */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--border-accent);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-tertiary);
+}
+
+/* Code blocks and pre-formatted text */
+code, pre {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-secondary);
+}
+
+/* Selection theme */
+::selection {
+    background-color: var(--accent-primary);
+    color: var(--text-inverse);
+}
+
+::-moz-selection {
+    background-color: var(--accent-primary);
+    color: var(--text-inverse);
+}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import LoginPage from './components/auth/LoginPage';
 import Dashboard from './components/DashboardNew';
 import PatientsPage from './components/patients/PatientsPage';
@@ -9,6 +10,7 @@ import XRayPage from './components/xray/XRayPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Header from './components/common/Header';
 import './App.css';
+import './theme.css';
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -49,11 +51,13 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <div className="App">
-        <AppContent />
-      </div>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <div className="App">
+          <AppContent />
+        </div>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
